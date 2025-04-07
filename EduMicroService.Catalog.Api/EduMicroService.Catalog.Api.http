@@ -1,6 +1,17 @@
-@EduMicroService.Catalog.Api_HostAddress = http://localhost:5198
+@baseAddress = http://localhost:5198
+@categoryId = 08dd7600-6cd4-a0a7-0015-5d43bf9f0000
 
-GET {{EduMicroService.Catalog.Api_HostAddress}}/weatherforecast/
+
+GET {{baseAddress}}/api/categories
 Accept: application/json
-
+###
+POST {{baseAddress}}/api/categories
+Accept: application/json
+Content-Type: application/json
+{
+  "name": "Bigisayar"
+}
+###
+GET {{baseAddress}}/api/categories/{{categoryId}}
+Accept: application/json
 ###
