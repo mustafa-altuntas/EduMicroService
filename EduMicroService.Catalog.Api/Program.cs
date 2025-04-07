@@ -1,7 +1,8 @@
+using EduMicroService.Catalog.Api;
+using EduMicroService.Catalog.Api.Features.Categories;
 using EduMicroService.Catalog.Api.Options;
 using EduMicroService.Catalog.Api.Repositories;
-using Microsoft.Extensions.Options;
-using MongoDB.Driver;
+using EduMicroService.Shared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsExt();
 builder.Services.AddDatabaseServiceExt();
-
+builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
 
 
 
@@ -21,6 +22,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+app.AddCategoryEndpointExt();
 
 
 
