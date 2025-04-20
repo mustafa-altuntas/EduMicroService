@@ -16,7 +16,7 @@ namespace EduMicroService.Catalog.Api.Repositories
             //property lerinden id değerini database de üretmesini istiyoruz
             builder.Property(c => c.Id).ValueGeneratedNever();
             builder.Property(c => c.Name).HasElementName("name").HasMaxLength(100);
-            builder.Property(c => c.Description).HasElementName("description").HasMaxLength(100);
+            builder.Property(c => c.Description).HasElementName("description").HasMaxLength(1000);
             builder.Property(c => c.Created).HasElementName("created");
             builder.Property(c => c.UserId).HasElementName("userId");
             builder.Property(c => c.CategoryId).HasElementName("categoryId");
