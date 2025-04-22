@@ -18,6 +18,16 @@ builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
 
 var app = builder.Build();
 
+Task task = app.AddSeedDataExt()
+    .ContinueWith(task =>
+    {
+        // Task continuation // await ile beklemek yerine task bitince aþaðýdaki kodu çalýþtýr diyoruz bu sayede bu method 5 dk dahi sürse uygula bloklanmýyor AddSeedDataExt() methodu arka planda çalýþýyor
+        Console.WriteLine(task.IsFaulted ? task.Exception?.Message : "Seed data has been saved successfully");
+    });
+
+
+
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
