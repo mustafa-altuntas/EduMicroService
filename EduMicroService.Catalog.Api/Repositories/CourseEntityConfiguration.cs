@@ -19,8 +19,8 @@ namespace EduMicroService.Catalog.Api.Repositories
             builder.Property(c => c.Description).HasElementName("description").HasMaxLength(1000);
             builder.Property(c => c.Created).HasElementName("created");
             builder.Property(c => c.UserId).HasElementName("userId");
+            builder.Property(c => c.ImageUrl).HasElementName("imageUrl").HasMaxLength(200);
             builder.Property(c => c.CategoryId).HasElementName("categoryId");
-            builder.Property(c => c.Picture).HasElementName("picture");
             builder.Ignore(c => c.Category); // Category propertyini ignore ettik çünkü bu bir navigation propery ve categoryId ile ilişkilendireceğiz
 
             builder.OwnsOne(c => c.Feature, feature =>

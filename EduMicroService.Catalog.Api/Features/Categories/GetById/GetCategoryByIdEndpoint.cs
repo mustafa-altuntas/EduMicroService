@@ -31,11 +31,13 @@ namespace EduMicroService.Catalog.Api.Features.Categories.GetById
     {
         public static RouteGroupBuilder GetCategoryByIdEndpointExt(this RouteGroupBuilder group)
         {
-            group.MapGet("/{id:guid}", async (IMediator mediator,Guid id) =>
+            group.MapGet("/{id:guid}", async (IMediator mediator, Guid id) =>
             {
                 var result = await mediator.Send(new GetCategoryByIdQuery(id));
                 return result.ToGenericResult();
-            });
+            })
+                .WithName("GetCategoryById");
+
             return group;
         }
     }

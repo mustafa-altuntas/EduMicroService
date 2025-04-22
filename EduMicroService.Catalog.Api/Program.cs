@@ -1,5 +1,6 @@
 using EduMicroService.Catalog.Api;
 using EduMicroService.Catalog.Api.Features.Categories;
+using EduMicroService.Catalog.Api.Features.Courses;
 using EduMicroService.Catalog.Api.Options;
 using EduMicroService.Catalog.Api.Repositories;
 using EduMicroService.Shared.Extensions;
@@ -25,6 +26,7 @@ if (app.Environment.IsDevelopment())
 
 
 app.AddCategoryEndpointExt();
+app.AddCourseEndpointExt();
 
 
 

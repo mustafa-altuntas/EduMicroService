@@ -21,7 +21,7 @@ namespace EduMicroService.Catalog.Api.Features.Categories.GetAll
         }
     }
 
-    public static class GetAllCategoryEndpoint
+    public static class GetAllCategoriesEndpoint
     {
         public static RouteGroupBuilder GetAllCategoryEndpointExt(this RouteGroupBuilder group)
         {
@@ -29,7 +29,8 @@ namespace EduMicroService.Catalog.Api.Features.Categories.GetAll
             {
                 var result = await mediator.Send(new GetAllCategoryQuery());
                 return result.ToGenericResult();
-            });
+            })
+                .WithName("GetAllCategory");
 
             return group;
         }
