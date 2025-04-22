@@ -1,5 +1,6 @@
 @baseAddress = http://localhost:5198
 @categoryId = 08dd7600-6cd4-a0a7-0015-5d43bf9f0000
+@courseId = 08dd818f-8132-9208-74d4-ddb7ab3f0000
 
 
 GET {{baseAddress}}/api/categories
@@ -12,7 +13,7 @@ Content-Type: application/json
   "name": "Bigisayar"
 }
 ###
-GET {{baseAddress}}/api/categories/{{categoryId}}
+GET {{baseAddress}}/api/Categories/{{categoryId}}
 Accept: application/json
 ###
 POST {{baseAddress}}/api/Courses/
@@ -26,6 +27,24 @@ Content-Type: application/json
   "categoryId": "{{categoryId}}"
 }
 ###
+PUT {{baseAddress}}/api/Courses/
+Accept: application/json
+Content-Type: application/json
+{
+  "id": "{{courseId}}",
+  "name": "New Course Update",
+  "description": "This is a new course  Update",
+  "price": 333,
+  "imageUrl": "images/bilgisyar.png  Update",
+  "categoryId": "{{categoryId}}"
+}
+###
 GET {{baseAddress}}/api/Courses/
+Accept: application/json
+###
+GET {{baseAddress}}/api/Courses/{{courseId}}
+Accept: application/json
+###
+DELETE {{baseAddress}}/api/Courses/{{courseId}}
 Accept: application/json
 ###
