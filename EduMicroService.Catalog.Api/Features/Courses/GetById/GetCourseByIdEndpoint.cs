@@ -41,7 +41,8 @@ namespace EduMicroService.Catalog.Api.Features.Courses.GetById
                 .Produces<CourseDto>(StatusCodes.Status200OK)
                 .Produces<ProblemDetails>(StatusCodes.Status404NotFound)
                 .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
-                .WithName("GetCourseById");
+                .WithName("GetCourseById")
+                .MapToApiVersion(1, 0);
             return group;
         }
     }

@@ -12,6 +12,7 @@ namespace EduMicroService.Catalog.Api.Features.Courses.Update
             group.MapPut("/", async (UpdateCourseCommand command, IMediator mediator)
                 => (await mediator.Send(command)).ToGenericResult())
                 .WithName("UpdateCourse")
+                .MapToApiVersion(1, 0)
                 .Produces(StatusCodes.Status200OK)
                 .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
                 .AddEndpointFilter<ValidationFilter<UpdateCourseCommand>>();

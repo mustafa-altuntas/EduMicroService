@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EduMicroService.Catalog.Api.Features.Courses.Create;
 using EduMicroService.Catalog.Api.Features.Courses.Dtos;
+using EduMicroService.Catalog.Api.Features.Courses.GetAll;
 using EduMicroService.Catalog.Api.Repositories;
 using EduMicroService.Shared;
 using EduMicroService.Shared.Extensions;
@@ -9,36 +10,35 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace EduMicroService.Catalog.Api.Features.Courses.GetAll
+namespace EduMicroService.Catalog.Api.Features.Courses.GetAllByUserId
 {
-    public record GetAllCoursesQuery():IRequestByServiceResult<List<CourseDto>>;
 
-    public class GetAllCoursesQueryHandler(AppDbContext context, IMapper mapper) : IRequestHandler<GetAllCoursesQuery, ServiceResult<List<CourseDto>>>
+    public record GetCoursesByUserIdQuery(Guid Id) : IRequestByServiceResult<List<CourseDto>>;
+
+    public class GetCoursesByUserIdQueryHandler(AppDbContext context, IMapper mapper) : IRequestHandler<GetCoursesByUserIdQuery, ServiceResult<List<CourseDto>>>
     {
-        public async Task<ServiceResult<List<CourseDto>>> Handle(GetAllCoursesQuery request, CancellationToken cancellationToken)
+        public async Task<ServiceResult<List<CourseDto>>> Handle(GetCoursesByUserIdQuery request, CancellationToken cancellationToken)
         {
-            var courses = await context.Courses.ToListAsync(cancellationToken);
+            var courses = await context.Courses.Where(x => x.UserId == request.Id).ToListAsync(cancellationToken);
             var categories = await context.Categories.ToListAsync(cancellationToken);
             courses.ForEach(courses =>
             {
                 courses.Category = categories.First(x => x.Id == courses.CategoryId);
-
-                // her seferinde veri tabanına gitmek maliyetli
-                //courses.Category = await context.Categories.FirstOrDefaultAsync(x => x.Id == courses.CategoryId, cancellationToken);
             });
 
             var courseDtos = mapper.Map<List<CourseDto>>(courses);
             return ServiceResult<List<CourseDto>>.SuccessAsOk(courseDtos);
+
         }
     }
 
-    public static class GetAllCoursesEndpoint
+    public static class GetCoursesByUserIdEndpoint
     {
-        public static RouteGroupBuilder GetAllCourseEndpointExt(this RouteGroupBuilder group)
+        public static RouteGroupBuilder GetCoursesByUserIdEndpointExt(this RouteGroupBuilder group)
         {
-            group.MapGet("/", async (IMediator mediator)
-                => (await mediator.Send(new GetAllCoursesQuery())).ToGenericResult())
-                .WithName("GetAllCourse")
+            group.MapGet("/user/{userId:guid}", async (IMediator mediator, Guid userId)
+                => (await mediator.Send(new GetCoursesByUserIdQuery(userId))).ToGenericResult())
+                .WithName("GetByUserIdCourses")
                 .MapToApiVersion(1, 0)
                 .Produces<List<CourseDto>>(StatusCodes.Status200OK)
                 .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
@@ -47,4 +47,8 @@ namespace EduMicroService.Catalog.Api.Features.Courses.GetAll
             return group;
         }
     }
+
+
+
+
 }

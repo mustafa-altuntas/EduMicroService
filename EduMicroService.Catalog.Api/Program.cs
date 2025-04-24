@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddOptionsExt();
 builder.Services.AddDatabaseServiceExt();
 builder.Services.AddCommonServiceExt(typeof(CatalogAssembly));
+builder.Services.AddVersioningExt();
 
 
 
@@ -35,8 +36,8 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.AddCategoryEndpointExt();
-app.AddCourseEndpointExt();
+app.AddCategoryEndpointExt(app.AddVersionSetExt());
+app.AddCourseEndpointExt(app.AddVersionSetExt());
 
 
 

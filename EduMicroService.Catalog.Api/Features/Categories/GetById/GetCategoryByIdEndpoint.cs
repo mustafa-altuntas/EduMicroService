@@ -36,7 +36,8 @@ namespace EduMicroService.Catalog.Api.Features.Categories.GetById
                 var result = await mediator.Send(new GetCategoryByIdQuery(id));
                 return result.ToGenericResult();
             })
-                .WithName("GetCategoryById");
+                .WithName("GetCategoryById")
+                .MapToApiVersion(1, 0);
 
             return group;
         }
