@@ -14,6 +14,7 @@ builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
+builder.Services.AddScoped<BasketService>();
 
 builder.Services.AddVersioningExt();
 

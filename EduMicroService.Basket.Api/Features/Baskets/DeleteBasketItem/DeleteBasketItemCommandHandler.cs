@@ -1,20 +1,14 @@
-﻿using EduMicroService.Basket.Api.Const;
-using EduMicroService.Shared;
-using EduMicroService.Shared.Services;
+﻿using EduMicroService.Shared;
 using MediatR;
-using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
 namespace EduMicroService.Basket.Api.Features.Baskets.DeleteBasketItem
 {
-    public class DeleteBasketItemCommandHandler(IDistributedCache distributedCache, IIdentityService identityService) : IRequestHandler<DeleteBasketItemCommand, ServiceResult>
+    public class DeleteBasketItemCommandHandler(BasketService basketService) : IRequestHandler<DeleteBasketItemCommand, ServiceResult>
     {
         public async Task<ServiceResult> Handle(DeleteBasketItemCommand request, CancellationToken cancellationToken)
         {
-            Guid userId = identityService.GetUserId;
-            var cacheKey = string.Format(BasketConst.BasketCacheKey, userId);
-
-            var basketAsString = await distributedCache.GetStringAsync(cacheKey, token: cancellationToken);
+            var basketAsString = await basketService.GetBasketFromCacheAsync(cancellationToken);
 
             if (string.IsNullOrEmpty(basketAsString))
             {
@@ -30,10 +24,10 @@ namespace EduMicroService.Basket.Api.Features.Baskets.DeleteBasketItem
             {
                 return ServiceResult.ErrorAsNotFound();
             }
-            currentBasket.BasketItems.Remove(basketItemToDelete);
 
-            basketAsString = JsonSerializer.Serialize(currentBasket);
-            await distributedCache.SetStringAsync(cacheKey, basketAsString, token: cancellationToken);
+            currentBasket.BasketItems.Remove(basketItemToDelete);
+            await basketService.CreateBasketToCacheAsync(currentBasket, cancellationToken);
+
             return ServiceResult.SuccessAsNoContent();
 
 

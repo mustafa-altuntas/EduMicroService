@@ -1,21 +1,18 @@
-﻿using EduMicroService.Basket.Api.Const;
-using EduMicroService.Basket.Api.Data;
+﻿using EduMicroService.Basket.Api.Data;
 using EduMicroService.Shared;
 using EduMicroService.Shared.Services;
 using MediatR;
-using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
 namespace EduMicroService.Basket.Api.Features.Baskets.AddBasketItem
 {
-    public class AddBasketItemCommandHandler(IDistributedCache distributedCache, IIdentityService identityService)
+    public class AddBasketItemCommandHandler(IIdentityService identityService, BasketService basketService)
          : IRequestHandler<AddBasketItemCommand, ServiceResult>
     {
         public async Task<ServiceResult> Handle(AddBasketItemCommand request, CancellationToken cancellationToken)
         {
-            Guid userId = identityService.GetUserId;
-            var cacheKey = string.Format(BasketConst.BasketCacheKey, userId);
-            var basketAsString = await distributedCache.GetStringAsync(cacheKey, token: cancellationToken);
+
+            var basketAsJson = await basketService.GetBasketFromCacheAsync(cancellationToken);
 
 
             Data.Basket? currentBasket;
@@ -24,14 +21,13 @@ namespace EduMicroService.Basket.Api.Features.Baskets.AddBasketItem
                 request.CoursePrice, null);
 
 
-            if (string.IsNullOrEmpty(basketAsString))
+            if (string.IsNullOrEmpty(basketAsJson))
             {
-                currentBasket = new Data.Basket(userId, [newBasketItem]);
-                basketAsString = JsonSerializer.Serialize(currentBasket);
-                await distributedCache.SetStringAsync(cacheKey, basketAsString, token: cancellationToken);
+                currentBasket = new Data.Basket(identityService.GetUserId, [newBasketItem]);
+                await basketService.CreateBasketToCacheAsync(currentBasket, cancellationToken);
                 return ServiceResult.SuccessAsNoContent();
             }
-            currentBasket = JsonSerializer.Deserialize<Data.Basket>(basketAsString, new JsonSerializerOptions
+            currentBasket = JsonSerializer.Deserialize<Data.Basket>(basketAsJson, new JsonSerializerOptions
             {
                 IncludeFields = true,
                 PropertyNameCaseInsensitive = true
@@ -49,8 +45,7 @@ namespace EduMicroService.Basket.Api.Features.Baskets.AddBasketItem
 
             currentBasket.ApplyAvailableDiscountRate();
 
-            basketAsString = JsonSerializer.Serialize(currentBasket);
-            await distributedCache.SetStringAsync(cacheKey, basketAsString, token: cancellationToken);
+            await basketService.CreateBasketToCacheAsync(currentBasket, cancellationToken);
             return ServiceResult.SuccessAsNoContent();
         }
     }

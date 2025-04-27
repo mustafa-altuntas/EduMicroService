@@ -1,19 +1,15 @@
-﻿using EduMicroService.Basket.Api.Const;
-using EduMicroService.Shared;
-using EduMicroService.Shared.Services;
+﻿using EduMicroService.Shared;
 using MediatR;
-using Microsoft.Extensions.Caching.Distributed;
 using System.Net;
 using System.Text.Json;
 
 namespace EduMicroService.Basket.Api.Features.Baskets.ApplyDiscountCoupon
 {
-    public class ApplyDiscountCouponCommandHandler(IIdentityService identityService, IDistributedCache distributedCache) : IRequestHandler<ApplyDiscountCouponCommand, ServiceResult>
+    public class ApplyDiscountCouponCommandHandler(BasketService basketService) : IRequestHandler<ApplyDiscountCouponCommand, ServiceResult>
     {
         public async Task<ServiceResult> Handle(ApplyDiscountCouponCommand request, CancellationToken cancellationToken)
         {
-            var cacheKey = string.Format(BasketConst.BasketCacheKey, identityService.GetUserId);
-            var basketAsJson = await distributedCache.GetStringAsync(cacheKey, token: cancellationToken);
+            var basketAsJson = await basketService.GetBasketFromCacheAsync(cancellationToken);
 
             if (string.IsNullOrEmpty(basketAsJson))
             {
@@ -29,10 +25,11 @@ namespace EduMicroService.Basket.Api.Features.Baskets.ApplyDiscountCoupon
 
 
 
-            basket.ApplyNewDiscount(request.Coupon,request.DiscountRate);
+            basket.ApplyNewDiscount(request.Coupon, request.DiscountRate);
 
-            basketAsJson = JsonSerializer.Serialize(basket);
-            await distributedCache.SetStringAsync(cacheKey, basketAsJson, token: cancellationToken);
+
+            await basketService.CreateBasketToCacheAsync(basket, cancellationToken);
+
 
             return ServiceResult.SuccessAsNoContent();
 
