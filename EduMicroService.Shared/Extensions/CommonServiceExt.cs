@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using EduMicroService.Shared.Services;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +14,7 @@ namespace EduMicroService.Shared.Extensions
 
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining(assembly);
+            services.AddScoped<IIdentityService, IdentityServiceFake>();
 
             services.AddAutoMapper(assembly);
 
