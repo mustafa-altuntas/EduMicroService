@@ -1,4 +1,7 @@
 using EduMicroService.Discount.Api;
+using EduMicroService.Discount.Api.Features.Discounts;
+using EduMicroService.Discount.Api.Options;
+using EduMicroService.Discount.Api.Repositories;
 using EduMicroService.Shared.Extensions;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +12,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCommonServiceExt(typeof(DiscountAssembly));
 builder.Services.AddVersioningExt();
+
+builder.Services.AddOptionsExt();
+builder.Services.AddDatabaseServiceExt();
 
 
 
@@ -30,9 +36,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
- 
 
- 
+app.AddDiscountEndpointExt(app.AddVersionSetExt());
+
+
+
 app.Run();
 
  

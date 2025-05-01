@@ -1,6 +1,21 @@
-@EduMicroService.Discount.Api_HostAddress = http://localhost:5082
+@baseAddress = http://localhost:5082
+@code = 13ring7890
+@code2 = 173ing7890
 
-GET {{EduMicroService.Discount.Api_HostAddress}}/weatherforecast/
+POST {{baseAddress}}/api/v1/discounts
 Accept: application/json
-
+Accept: application/json
+Content-Type: application/json
+{
+  "code": "173ing7890",
+  "rate": 0.3,
+  "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "expired": "2025-05-30T20:42:12.817Z"
+}
+###
+GET {{baseAddress}}/api/v1/discounts/{{code}}
+Accept: application/json
+###
+GET {{baseAddress}}/api/v1/discounts/{{code2}}
+Accept: application/json
 ###
