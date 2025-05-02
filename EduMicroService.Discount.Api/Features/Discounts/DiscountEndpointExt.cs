@@ -1,4 +1,4 @@
-﻿using Asp.Versioning.Builder;
+﻿    using Asp.Versioning.Builder;
 using EduMicroService.Discount.Api.Features.Discounts.CreateDiscount;
 using EduMicroService.Discount.Api.Features.Discounts.GetDiscountByCode;
 
@@ -13,7 +13,7 @@ namespace EduMicroService.Discount.Api.Features.Discounts
                 .WithApiVersionSet(apiVersionSet)
                 .CreateDiscountEndpointExt()
                 .GetDiscountByCodeEndpointExt()
-                ;
+            ;
 
         }
     }
