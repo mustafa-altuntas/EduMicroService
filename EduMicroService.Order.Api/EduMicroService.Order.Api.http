@@ -1,0 +1,38 @@
+@baseAddress = http://localhost:5247
+
+POST {{baseAddress}}/api/v1/Orders
+Accept: application/json
+Content-Type: application/json
+{
+  "discountRate": 10,
+  "address": {
+    "province": "Ýstanbul",
+    "district": "Kadýköy",
+    "street": "Bahariye Caddesi",
+    "zipCode": "34710",
+    "line": "No:23 Daire:5"
+  },
+  "payment": {
+    "cardNumber": "4111111111111111",
+    "cardHolderName": "Ali Veli",
+    "expiration": "12/26",
+    "cvc": "123",
+    "amount": 150.75
+  },
+  "items": [
+    {
+      "productId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "productName": "Bluetooth Kulaklýk",
+      "unitPrice": 50.25
+    },
+    {
+      "productId": "AB516D26-A456-477A-8D87-C8C15FB11094",
+      "productName": "Akýllý Telefon",
+      "unitPrice": 100.50
+    }
+  ]
+}
+###
+GET {{baseAddress}}/api/v1/Orders
+Accept: application/json
+###
