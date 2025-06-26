@@ -10,7 +10,7 @@ namespace EduMicroService.Shared.Extensions
         public static IServiceCollection AddCommonServiceExt(this IServiceCollection services,Type assembly)
         {
             services.AddHttpContextAccessor();
-            servUserRefreshTokensUserRefreshTokensices.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining(assembly));
 
             services.AddFluentValidationAutoValidation();
             services.AddValidatorsFromAssemblyContaining(assembly);
