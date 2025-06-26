@@ -1,4 +1,5 @@
 using EduMicroService.Payment.Api;
+using EduMicroService.Payment.Api.Feature.Payments;
 using EduMicroService.Payment.Api.Repositories;
 using EduMicroService.Shared.Extensions;
 using Microsoft.EntityFrameworkCore;
@@ -58,7 +59,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-//app.AddFileEndpoints(app.AddVersionSetExt());
+app.AddPaymentEndpoints(app.AddVersionSetExt());
 
 
 
