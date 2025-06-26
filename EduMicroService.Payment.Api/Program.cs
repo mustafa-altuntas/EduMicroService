@@ -23,10 +23,10 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 
-    // XML yorumlarýný dahil etmek için
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    c.IncludeXmlComments(xmlPath);
+    //// XML yorumlarýný dahil etmek için
+    //var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    //var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    //c.IncludeXmlComments(xmlPath);
 });
 
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
