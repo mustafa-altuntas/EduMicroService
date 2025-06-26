@@ -17,4 +17,8 @@
     <ProjectReference Include="..\EduMicroService.Shared\EduMicroService.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Feature\Payments\Create\" />
+  </ItemGroup>
+
 </Project>

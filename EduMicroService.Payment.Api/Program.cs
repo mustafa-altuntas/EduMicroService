@@ -1,5 +1,7 @@
 using EduMicroService.Payment.Api;
+using EduMicroService.Payment.Api.Repositories;
 using EduMicroService.Shared.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 
@@ -31,6 +33,11 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddCommonServiceExt(typeof(PaymentAssembly));
 builder.Services.AddVersioningExt();
+
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseInMemoryDatabase("payment-in-memory-db");
+});
 
 
 
