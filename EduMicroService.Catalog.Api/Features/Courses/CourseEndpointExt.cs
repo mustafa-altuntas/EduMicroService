@@ -10,9 +10,9 @@ namespace EduMicroService.Catalog.Api.Features.Courses
 {
     public static class CourseEndpointExt
     {
-        public static void AddCourseEndpointExt(this WebApplication app, ApiVersionSet apiVersionSet)
+        public static RouteGroupBuilder AddCourseEndpointExt(this WebApplication app, ApiVersionSet apiVersionSet)
         {
-            app.MapGroup("api/v{version:apiVersion}/courses")
+            var group =  app.MapGroup("api/v{version:apiVersion}/courses")
                 .WithTags("Courses")
                 .WithApiVersionSet(apiVersionSet)
                 .CreateCourseEndpointExt()
@@ -22,6 +22,8 @@ namespace EduMicroService.Catalog.Api.Features.Courses
                 .DeleteCourseEndpointExt()
                 .GetCoursesByUserIdEndpointExt()
                 ;
+
+            return group;
         }
     }
 }

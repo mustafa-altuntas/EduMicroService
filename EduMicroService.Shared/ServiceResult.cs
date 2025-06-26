@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Refit;
 using System.Net;
 using System.Text.Json;
@@ -7,7 +8,7 @@ using ProblemDetails = Microsoft.AspNetCore.Mvc.ProblemDetails;
 
 namespace EduMicroService.Shared
 {
-    
+
     public interface IRequestByServiceResult<T> : IRequest<ServiceResult<T>>;
     public interface IRequestByServiceResult : IRequest<ServiceResult>;
 
@@ -67,6 +68,28 @@ namespace EduMicroService.Shared
             };
         }
 
+        public static ServiceResult Error(string title, IdentityResult result)
+        {
+            return new ServiceResult
+            {
+                Status = HttpStatusCode.BadRequest,
+                Fail = new ProblemDetails()
+                {
+                    Title = "Identity operation failed",
+                    Status = (int)HttpStatusCode.BadRequest,
+                    Extensions =
+                    {
+                        ["errors"] = result.Errors
+                            .GroupBy(e => e.Code)
+                            .ToDictionary(
+                                g => g.Key,
+                                g => g.Select(e => e.Description).ToArray()
+                            )
+                    }
+                }
+            };
+        }
+
         public static ServiceResult Error(string title, HttpStatusCode status)
         {
             return new ServiceResult
@@ -108,7 +131,7 @@ namespace EduMicroService.Shared
             };
         }
 
-        public static ServiceResult ErrorFromValidation(IDictionary<string, object?> errors)
+        public static ServiceResult ErrorFromValidation400(IDictionary<string, object?> errors)
         {
             return new ServiceResult
             {
@@ -157,6 +180,34 @@ namespace EduMicroService.Shared
             {
                 Status = status,
                 Fail = problemDetails
+            };
+        }
+
+        /// <summary>
+        /// status is BadRequest
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="result"></param>
+        /// <returns></returns>
+        public static ServiceResult<T> Error(string title, IdentityResult result)
+        {
+            return new ServiceResult<T>
+            {
+                Status = HttpStatusCode.BadRequest,
+                Fail = new ProblemDetails()
+                {
+                    Title = "Identity operation failed",
+                    Status = (int)HttpStatusCode.BadRequest,
+                    Extensions =
+                    {
+                        ["errors"] = result.Errors
+                            .GroupBy(e => e.Code)
+                            .ToDictionary(
+                                g => g.Key,
+                                g => g.Select(e => e.Description).ToArray()
+                            )
+                    }
+                }
             };
         }
 
@@ -215,7 +266,7 @@ namespace EduMicroService.Shared
             };
         }
 
-        public new static ServiceResult<T> ErrorFromValidation(IDictionary<string, object?> errors)
+        public new static ServiceResult<T> ErrorFromValidation400(IDictionary<string, object?> errors)
         {
             return new ServiceResult<T>
             {
@@ -226,6 +277,19 @@ namespace EduMicroService.Shared
                     Detail = "Please check the errors property for more details",
                     Extensions = errors,
                     Status = HttpStatusCode.BadRequest.GetHashCode()
+                }
+            };
+        }
+
+        public static ServiceResult<T> ErrorAsNotFound()
+        {
+            return new ServiceResult<T>
+            {
+                Status = HttpStatusCode.NotFound,
+                Fail = new ProblemDetails
+                {
+                    Title = "Not Found",
+                    Detail = "The requested resource was not found"
                 }
             };
         }

@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using EduMicroService.Catalog.Api.Features.Courses.Create;
 using EduMicroService.Catalog.Api.Features.Courses.Dtos;
-using EduMicroService.Catalog.Api.Features.Courses.GetAll;
 using EduMicroService.Catalog.Api.Repositories;
 using EduMicroService.Shared;
 using EduMicroService.Shared.Extensions;
@@ -19,6 +18,9 @@ namespace EduMicroService.Catalog.Api.Features.Courses.GetAllByUserId
     {
         public async Task<ServiceResult<List<CourseDto>>> Handle(GetCoursesByUserIdQuery request, CancellationToken cancellationToken)
         {
+            // todo : user id check
+
+
             var courses = await context.Courses.Where(x => x.UserId == request.Id).ToListAsync(cancellationToken);
             var categories = await context.Categories.ToListAsync(cancellationToken);
             courses.ForEach(courses =>

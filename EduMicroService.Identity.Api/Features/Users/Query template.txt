@@ -1,0 +1,57 @@
+﻿ 
+
+ 
+
+
+    public record XXXXXXCommand(string UserName, string Email, string Password, string? PhoneNumber = null):IRequestByServiceResult;
+     
+
+    public class XXXXXXCommandValidator : AbstractValidator<XXXXXXCommand>
+    {
+        public XXXXXXCommandValidator()
+        {
+            RuleFor(x => x.Id)
+                .NotEmpty()
+                .WithMessage("Role id is required.");
+
+        }
+    }
+
+
+
+    public class XXXXXXCommandHandler(UserManager<AppUser> userManager) : IRequestHandler<, ServiceResult>
+    {
+         
+    }
+
+
+    public static class XXXXXXEndpointExt
+    {
+        public static RouteGroupBuilder MapXXXXXXEndpointExt(this RouteGroupBuilder group)
+        {
+            group.MapPut("/", async (XXXXXXCommand command, IMediator mediator) =>
+            {
+                var result = await mediator.Send(command);
+                return result.ToGenericResult();
+            })
+            .WithName("XXXXXX")
+            .MapToApiVersion(1, 0)
+            .Produces<Guid>(StatusCodes.Status204NoContent)
+            .Produces<ProblemDetails>(StatusCodes.Status400BadRequest)
+            .Produces<ProblemDetails>(StatusCodes.Status500InternalServerError)
+            .AddEndpointFilter<ValidationFilter<XXXXXXCommand>>()
+                ;
+
+            return group;
+        }
+    }
+
+
+                //.MapGetUsersEndpointExt()
+                //.MapGetUserByIdEndpointExt()
+                //.MapUpdateUserEndpointExt()
+                //.MapDeleteUserEndpointExt()
+                //.MapAssignRolesToUserEndpointExt()
+                //.MapGetUserRolesEndpointExt()
+                //.MapRemoveUserRoleEndpointExt()
+                //.MapRequireAuthorization("Admin")

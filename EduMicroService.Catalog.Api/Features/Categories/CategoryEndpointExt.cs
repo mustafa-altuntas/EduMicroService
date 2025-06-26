@@ -7,15 +7,17 @@ namespace EduMicroService.Catalog.Api.Features.Categories
 {
     public static class CategoryEndpointExt
     {
-        public static void AddCategoryEndpointExt(this WebApplication app, ApiVersionSet apiVersionSet)
+        public static RouteGroupBuilder AddCategoryEndpointExt(this WebApplication app, ApiVersionSet apiVersionSet)
         {
-            app.MapGroup("api/v{version:apiVersion}/categories")
+            var group = app.MapGroup("api/v{version:apiVersion}/categories")
                 .WithTags("Categories")
                 .WithApiVersionSet(apiVersionSet)
                 .CreateCategoryEndpoint()
                 .GetAllCategoryEndpointExt()
                 .GetCategoryByIdEndpointExt()
                 ;
+
+            return group;
         }
     }
 }

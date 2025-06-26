@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
 
+
 namespace EduMicroService.Catalog.Api.Options
+
 {
     public static class OptionExt
     {
@@ -8,7 +10,7 @@ namespace EduMicroService.Catalog.Api.Options
         {
             services.AddOptions<MongoOption>().BindConfiguration(nameof(MongoOption)).ValidateDataAnnotations().ValidateOnStart();
 
-            services.AddSingleton<MongoOption>(sp=> sp.GetRequiredService<IOptions<MongoOption>>().Value); //herhangi bir yerde MongoOption kullanmak istediğimizde DI container ile istek talep karşılanacak
+            services.AddSingleton<MongoOption>(sp => sp.GetRequiredService<IOptions<MongoOption>>().Value); //herhangi bir yerde MongoOption kullanmak istediğimizde DI container ile istek talep karşılanacak
 
 
 
