@@ -1,5 +1,6 @@
 ﻿using Asp.Versioning.Builder;
 using EduMicroService.Payment.Api.Feature.Payments.Create;
+using EduMicroService.Payment.Api.Feature.Payments.GetAllPaymentsByUserId;
 
 namespace EduMicroService.Payment.Api.Feature.Payments
 {
@@ -11,6 +12,7 @@ namespace EduMicroService.Payment.Api.Feature.Payments
                 .WithTags("Payments")
                 .WithApiVersionSet(apiVersionSet)
                 .MapCreatePaymentEndpointExt()
+                .MapGetAllPaymentsByUserIdEndpointExt()
                 ;
  
         }
