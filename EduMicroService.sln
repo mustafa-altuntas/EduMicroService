@@ -53,6 +53,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "payment", "payment", "{BF0B
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMicroService.Payment.Api", "EduMicroService.Payment.Api\EduMicroService.Payment.Api.csproj", "{44E3FA8F-2902-4BEE-9373-1DC8E8F24913}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "gateway", "gateway", "{B3553375-6A88-4715-935E-C3D3F47AA251}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EduMicroService.Gateway", "EduMicroService.Gateway\EduMicroService.Gateway.csproj", "{9C3095FF-5742-4514-86CA-DE2BC0E198F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +111,10 @@ Global
 		{44E3FA8F-2902-4BEE-9373-1DC8E8F24913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44E3FA8F-2902-4BEE-9373-1DC8E8F24913}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44E3FA8F-2902-4BEE-9373-1DC8E8F24913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C3095FF-5742-4514-86CA-DE2BC0E198F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C3095FF-5742-4514-86CA-DE2BC0E198F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C3095FF-5742-4514-86CA-DE2BC0E198F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C3095FF-5742-4514-86CA-DE2BC0E198F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -135,6 +143,8 @@ Global
 		{BE468AC1-D289-408B-A888-984F316866BC} = {56FDFDB2-63A6-4984-B475-3022B534F7AD}
 		{BF0B7C4B-B00A-4E20-B6AE-41FB389696F4} = {E463977C-1F67-49E1-9132-8FD322050A46}
 		{44E3FA8F-2902-4BEE-9373-1DC8E8F24913} = {BF0B7C4B-B00A-4E20-B6AE-41FB389696F4}
+		{B3553375-6A88-4715-935E-C3D3F47AA251} = {E463977C-1F67-49E1-9132-8FD322050A46}
+		{9C3095FF-5742-4514-86CA-DE2BC0E198F4} = {B3553375-6A88-4715-935E-C3D3F47AA251}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {39E691E6-4BD2-4E4E-B247-9F3C151F28C1}
