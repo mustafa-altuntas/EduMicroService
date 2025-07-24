@@ -1,0 +1,26 @@
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /app
+
+# Proje dosyalarını kopyala ve restore et
+COPY EduMicroService.Shared/*.csproj EduMicroService.Shared/
+COPY EduMicroService.Payment.Api/*.csproj EduMicroService.Payment.Api/
+
+# Payment.Api restore edilirken Shared dependency'si de otomatik restore edilir
+RUN dotnet restore EduMicroService.Payment.Api/*.csproj
+
+# Tüm kaynak kodları kopyala
+COPY . .
+
+# Publish işlemi
+RUN dotnet publish EduMicroService.Payment.Api/*.csproj -c Release -o out
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+WORKDIR /app
+EXPOSE 80
+
+# Published files'ları kopyala
+COPY --from=build /app/out .
+
+ENTRYPOINT ["dotnet", "EduMicroService.Payment.Api.dll"]

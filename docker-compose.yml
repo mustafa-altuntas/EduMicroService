@@ -70,8 +70,77 @@ services:
       - "1433:1433"
     volumes:
       - sqlserver.db.order.volume:/var/opt/mssql
+  sqlserver.db.identity:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver.db.identity
+    restart: always
+    user: root
+    environment:
+      SA_PASSWORD: ${SA_PASSWORD}
+      ACCEPT_EULA: "Y"
+    ports:
+      - "1435:1433"
+    volumes:
+      - sqlserver.db.identity.volume:/var/opt/mssql
+  payment.api:
+    build:
+      context: .
+      dockerfile: EduMicroService.Payment.Api/dockerfile
+    container_name: payment.api
+    ports:
+      - "5096:8080"
+  basket.api:
+    build:
+      context: .
+      dockerfile: EduMicroService.Basket.Api/dockerfile
+    container_name: basket.api
+    ports:
+      - "5153:8080"
+    environment:
+      - "ConnectionStrings:Redis=redis.db.basket,password=Password1"
+    depends_on:
+      - redis.db.basket
+  catalog.api:
+    build:
+      context: .
+      dockerfile: EduMicroService.Catalog.Api/dockerfile
+    container_name: catalog.api
+    ports:
+      - "5198:8080"
+    environment:
+      - "MongoOption:DatabaseName=catalog-db"
+      - "MongoOption:ConnectionString=mongodb://myuser:Password1@mongo.db.catalog"
+    depends_on:
+      - mongo.db.catalog
+  # Önemli not: Identity API test edildi sorunsuz çalıştır fakat önemli bir not sql server identity db yavaş açıldığı için sanırım api ilk başta çalışmıyor.
+  # Bu yüzden docker-compose up -d komutunu verdikten sonra 5-10 dakika bekleyin ve ardından identity.api servisini başlatın.
+  # Bu sorunu bir çözüm ara.
+  identity.api:
+    build:
+      context: .
+      dockerfile: EduMicroService.Identity.Api/dockerfile
+    container_name: identity.api
+    ports:
+      - "5108:8080"
+    environment:
+      - "ConnectionStrings:DefaultConnection=Server=sqlserver.db.identity,1433;Database=IdentityDb;User=sa;Password=Password1;Trusted_Connection=False;TrustServerCertificate=True;Integrated Security=False"
+      - TokenOption__Issuer=www.authserver.edumicroservice.com
+      - TokenOption__AccessTokenExpiration=1440
+      - TokenOption__RefreshTokenExpiration=600
+      - TokenOption__SecurityKey=mysecuritykeymysecuritykeymysecuritykeymysecuritykey
+      - TokenOption__Audiences__0=www.authserver.edumicroservice.com
+      - TokenOption__Audiences__1=www.catalog.edumicroservice.com
+      - TokenOption__Audiences__2=www.order.edumicroservice.com
+      - Clients__0__ClientId=mvc
+      - Clients__0__ClientSecret=mvc_ClientSecret
+      - Clients__0__Audiences__0=www.authserver.edumicroservice.com
+      - Clients__0__Audiences__1=www.catalog.edumicroservice.com
+      - Clients__0__Audiences__2=www.basket.edumicroservice.com
+    depends_on:
+      - sqlserver.db.identity
 volumes:
   mongo.db.catalog.volume:
   redis.db.basket.volume:
   mongo.db.discount.volume:
   sqlserver.db.order.volume:
+  sqlserver.db.identity.volume:

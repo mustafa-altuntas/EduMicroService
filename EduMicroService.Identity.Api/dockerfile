@@ -1,0 +1,25 @@
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /app
+
+# Proje dosyalarını kopyala ve restore et
+COPY EduMicroService.Shared/*.csproj EduMicroService.Shared/
+COPY EduMicroService.Identity.Api/*.csproj EduMicroService.Identity.Api/
+
+RUN dotnet restore EduMicroService.Identity.Api/*.csproj
+
+# Tüm kaynak kodları kopyala
+COPY . .
+
+# Publish işlemi
+RUN dotnet publish EduMicroService.Identity.Api/*.csproj -c Release -o out
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
+WORKDIR /app
+EXPOSE 8080
+
+# Published files'ları kopyala
+COPY --from=build /app/out .
+
+ENTRYPOINT ["dotnet", "EduMicroService.Identity.Api.dll"]
